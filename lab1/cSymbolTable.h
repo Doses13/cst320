@@ -5,12 +5,17 @@
 //
 
 #include "cSymbol.h"
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 // NOTE: The following typedef will have to be replaced by something meaningful
-typedef void* symbolTable_t;
+typedef std::unordered_map<std::string, cSymbol*> symbolTable_t;
 
 class cSymbolTable
 {
+    std::vector<symbolTable_t*> m_scopes; // stack of symbol tables
+
     public:
         // Construct an empty symbol table
         cSymbolTable();
