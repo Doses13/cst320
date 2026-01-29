@@ -29,6 +29,8 @@ class cSymbol
             return result;
         }
 
+        long long GetId() { return m_id; }   // Return symbol ID
+
         // Return name of symbol
         string GetName() { return m_name; }
     protected:

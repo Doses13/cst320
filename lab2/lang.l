@@ -22,20 +22,6 @@ static cSymbol* ProcessID(const char* name);
 
 int Return(int val);
 
-static cSymbol* ProcessIdentifier(const char* name)
-{
-    // LOCAL lookup for this lab
-    cSymbol* sym = g_symbolTable.FindLocal(name);
-
-    if (sym == nullptr)
-    {
-        sym = new cSymbol(name);
-        g_symbolTable.Insert(sym);
-    }
-
-    return sym;
-}
-
 %}
 
 %option noyywrap

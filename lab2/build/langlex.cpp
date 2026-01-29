@@ -515,23 +515,9 @@ static cSymbol* ProcessID(const char* name);
 
 int Return(int val);
 
-static cSymbol* ProcessIdentifier(const char* name)
-{
-    // LOCAL lookup for this lab
-    cSymbol* sym = g_symbolTable.FindLocal(name);
-
-    if (sym == nullptr)
-    {
-        sym = new cSymbol(name);
-        g_symbolTable.Insert(sym);
-    }
-
-    return sym;
-}
-
 #define YY_NO_INPUT 1
 #define YY_NO_UNPUT 1
-#line 535 "C:/Users/shygu/source/repos/cst320/lab2/build/langlex.cpp"
+#line 521 "C:/Users/shygu/source/repos/cst320/lab2/build/langlex.cpp"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -682,10 +668,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 46 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 32 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 
 
-#line 689 "C:/Users/shygu/source/repos/cst320/lab2/build/langlex.cpp"
+#line 675 "C:/Users/shygu/source/repos/cst320/lab2/build/langlex.cpp"
 
 	if ( yy_init )
 		{
@@ -778,217 +764,217 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 48 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 34 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 {} /* Ignore whitespace */
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 49 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 35 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 {} /* Ignore comments */
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 51 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 37 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(PROGRAM)
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 52 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 38 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(IF)
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 53 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 39 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(ELSE)
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 54 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 40 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(ENDIF)
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 55 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 41 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(WHILE)
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 56 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 42 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(PRINT)
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 57 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 43 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(CHAR)    
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 58 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 44 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(INT)
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 59 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 45 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(LONG)
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 60 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 46 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(FLOAT)
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 61 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 47 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(DOUBLE)
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 62 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 48 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(STRUCT)
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 63 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 49 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(ARRAY)
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 64 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 50 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(RETURN)
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 65 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 51 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(PRINTS)
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 66 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 52 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(LOCAL)
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 67 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 53 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(GLOBAL)
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 68 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 54 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(LOOKUP)
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 69 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 55 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(INSERT)
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 71 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 57 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(NOT_EQUALS)
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 72 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 58 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(EQUALS)
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 73 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 59 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(AND)
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 74 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 60 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(OR)
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 75 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 61 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(GE)
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 76 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 62 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(LE)
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 77 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 63 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(DOT)
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 78 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 64 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(SEMICOLON)
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 79 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 65 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(ASSIGN)                             
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 80 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 66 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(PLUS)
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 81 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 67 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(MINUS)
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 82 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 68 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(MULTIPLY)
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 83 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 69 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(DIVIDE)
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 84 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 70 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(MODULO)
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 85 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 71 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(LT)
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 86 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 72 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(GT)
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 87 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 73 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(LPAREN)
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 88 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 74 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(RPAREN)
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 89 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 75 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(COMMA)
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 90 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 76 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(LBRACKET)
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 91 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 77 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(RBRACKET)
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 93 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 79 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 {
     g_symbolTable.IncreaseScope();
     DO_RETURN(OPEN)
@@ -996,7 +982,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 98 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 84 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 {
     g_symbolTable.DecreaseScope();
     DO_RETURN(CLOSE)
@@ -1004,22 +990,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 103 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 89 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(STRING_LIT)
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 104 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 90 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(FLOAT_VAL)                  
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 105 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 91 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(INT_VAL)
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 108 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 94 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 {
     cSymbol* sym = ProcessID(yytext);
     yylval.symbol = sym;
@@ -1028,15 +1014,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 114 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 100 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 DO_RETURN(JUNK_TOKEN)
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 116 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 102 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 ECHO;
 	YY_BREAK
-#line 1040 "C:/Users/shygu/source/repos/cst320/lab2/build/langlex.cpp"
+#line 1026 "C:/Users/shygu/source/repos/cst320/lab2/build/langlex.cpp"
 			case YY_STATE_EOF(INITIAL):
 				yyterminate();
 
@@ -1920,7 +1906,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 116 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
+#line 102 "C:/Users/shygu/source/repos/cst320/lab2/lang.l"
 
 
 // **********************************************

@@ -19,6 +19,7 @@
 #include <fstream>
 
 #include "lex.h"
+#include "tokens.h"
 #include "cSymbol.h"
 #include "cSymbolTable.h"
 
@@ -29,7 +30,7 @@ yylval_t yylval;
 
 // Uncomment the following line after integrating your symbol table with
 // your scanner.
-// #define TEST2
+#define TEST2
 
 //****************************************
 // argv[1] contains the file to process
@@ -42,7 +43,7 @@ int main(int argc, char **argv)
     const char *outfile_name;
     int result = 0;
     int token;
-    int do_test2 = 0;
+    int do_test2 = 1;
 
     if (argc > 1)
     {
