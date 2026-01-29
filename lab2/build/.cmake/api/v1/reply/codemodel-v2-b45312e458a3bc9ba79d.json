@@ -29,7 +29,7 @@
 					[
 						0
 					],
-					"name" : "Lab1Symtab",
+					"name" : "Lab2Scanner",
 					"targetIndexes" : 
 					[
 						0,
@@ -43,22 +43,22 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-Debug-5a4d519c0371bce23023.json",
+					"jsonFile" : "target-ALL_BUILD-Debug-d3b5402eeb08b7a542de.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ZERO_CHECK-Debug-edd43f3f64f4334a7e6a.json",
+					"jsonFile" : "target-ZERO_CHECK-Debug-04b27ba4d3ba835153cf.json",
 					"name" : "ZERO_CHECK",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
-					"id" : "lab1::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-lab1-Debug-d427e180f5c3d4702504.json",
-					"name" : "lab1",
+					"id" : "lab2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lab2-Debug-9359421f4eefe4553873.json",
+					"name" : "lab2",
 					"projectIndex" : 0
 				}
 			]
@@ -91,7 +91,7 @@
 					[
 						0
 					],
-					"name" : "Lab1Symtab",
+					"name" : "Lab2Scanner",
 					"targetIndexes" : 
 					[
 						0,
@@ -105,22 +105,22 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-Release-5a4d519c0371bce23023.json",
+					"jsonFile" : "target-ALL_BUILD-Release-d3b5402eeb08b7a542de.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ZERO_CHECK-Release-edd43f3f64f4334a7e6a.json",
+					"jsonFile" : "target-ZERO_CHECK-Release-04b27ba4d3ba835153cf.json",
 					"name" : "ZERO_CHECK",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
-					"id" : "lab1::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-lab1-Release-c12b1d5df6e52ae9e812.json",
-					"name" : "lab1",
+					"id" : "lab2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lab2-Release-ffdf42d6f81ed40490a1.json",
+					"name" : "lab2",
 					"projectIndex" : 0
 				}
 			]
@@ -153,7 +153,7 @@
 					[
 						0
 					],
-					"name" : "Lab1Symtab",
+					"name" : "Lab2Scanner",
 					"targetIndexes" : 
 					[
 						0,
@@ -167,22 +167,22 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-MinSizeRel-5a4d519c0371bce23023.json",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-d3b5402eeb08b7a542de.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ZERO_CHECK-MinSizeRel-edd43f3f64f4334a7e6a.json",
+					"jsonFile" : "target-ZERO_CHECK-MinSizeRel-04b27ba4d3ba835153cf.json",
 					"name" : "ZERO_CHECK",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
-					"id" : "lab1::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-lab1-MinSizeRel-e5db6e1470230fd3c6d5.json",
-					"name" : "lab1",
+					"id" : "lab2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lab2-MinSizeRel-ab12b769f4ce50dd74b3.json",
+					"name" : "lab2",
 					"projectIndex" : 0
 				}
 			]
@@ -215,7 +215,7 @@
 					[
 						0
 					],
-					"name" : "Lab1Symtab",
+					"name" : "Lab2Scanner",
 					"targetIndexes" : 
 					[
 						0,
@@ -229,22 +229,22 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-5a4d519c0371bce23023.json",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-d3b5402eeb08b7a542de.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ZERO_CHECK-RelWithDebInfo-edd43f3f64f4334a7e6a.json",
+					"jsonFile" : "target-ZERO_CHECK-RelWithDebInfo-04b27ba4d3ba835153cf.json",
 					"name" : "ZERO_CHECK",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
-					"id" : "lab1::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-lab1-RelWithDebInfo-f39f3abaf4ca0fdf3f9e.json",
-					"name" : "lab1",
+					"id" : "lab2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lab2-RelWithDebInfo-2c54b2cfb0e966804b7e.json",
+					"name" : "lab2",
 					"projectIndex" : 0
 				}
 			]
@@ -253,8 +253,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/shygu/source/repos/cst320/lab1/build",
-		"source" : "C:/Users/shygu/source/repos/cst320/lab1"
+		"build" : "C:/Users/shygu/source/repos/cst320/lab2/build",
+		"source" : "C:/Users/shygu/source/repos/cst320/lab2"
 	},
 	"version" : 
 	{

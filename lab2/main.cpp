@@ -10,23 +10,35 @@
 // Date: Nov. 23, 2015
 //
 
-#include <unistd.h>
+#include <io.h>
+#define dup2 _dup2
+#define fileno _fileno
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
 
 #include "lex.h"
+#include "cSymbol.h"
+#include "cSymbolTable.h"
+
+//extern declarations
+cSymbolTable g_symbolTable;
+long long cSymbol::nextId = 0;
+yylval_t yylval;
 
 // Uncomment the following line after integrating your symbol table with
 // your scanner.
-//#define TEST2
+// #define TEST2
 
 //****************************************
 // argv[1] contains the file to process
 // argv[2] if given, contains the name of the output file
 int main(int argc, char **argv)
 {
+
+    std::cout << "Joseph Byers\n";
+
     const char *outfile_name;
     int result = 0;
     int token;

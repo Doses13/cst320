@@ -9,6 +9,21 @@
 // phil.howard@oit.edu
 //
 
+#define DOT         46          // .
+#define ASSIGN      61          // =
+#define PLUS        43          // +
+#define MINUS       45          // -
+#define MULTIPLY    42          // *
+#define DIVIDE      47          // /
+#define MODULO      37          // %
+#define LT          60          // <
+#define GT          62         // >
+#define LPAREN      40          // (
+#define RPAREN      41          // )
+#define COMMA       44          // ,
+#define LBRACKET    91          // [
+#define RBRACKET    93          // ]
+#define SEMICOLON   59          // ;
 #define PROGRAM     1000        // program
 #define IF          1001        // if
 #define ELSE        1002        // else
@@ -34,6 +49,10 @@
 #define LE          1022        // <=
 #define PRINTS      1023        // prints
 #define STRING_LIT  1024        // "stuff..."
-
-#define JUNK_TOKEN  2000
-
+#define LOCAL       1025
+#define GLOBAL      1026
+#define LOOKUP      1027
+#define INSERT      1028
+#define OPEN        123         // {
+#define CLOSE       125         // }
+#define JUNK_TOKEN  2000        // used to skip unwanted tokens
