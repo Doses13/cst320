@@ -1,0 +1,3 @@
+C:/Users/shygu/source/repos/cst320/lab4/build/CMakeFiles/lab4.dir
+C:/Users/shygu/source/repos/cst320/lab4/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/shygu/source/repos/cst320/lab4/build/CMakeFiles/ZERO_CHECK.dir

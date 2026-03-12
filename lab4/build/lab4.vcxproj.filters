@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\shygu\source\repos\cst320\lab4\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shygu\source\repos\cst320\lab4\cVisitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shygu\source\repos\cst320\lab4\cSymbolTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shygu\source\repos\cst320\lab4\build\langparse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\shygu\source\repos\cst320\lab4\build\langlex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\shygu\source\repos\cst320\lab4\build\langparse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\shygu\source\repos\cst320\lab4\build\CMakeFiles\cbe48b92b7e12b032b6a421bdf131254\langparse.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\shygu\source\repos\cst320\lab4\build\CMakeFiles\cbe48b92b7e12b032b6a421bdf131254\langlex.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\shygu\source\repos\cst320\lab4\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{A7E6780A-FCA9-3299-BC2F-B0DA1C1748A5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{69A93E0E-85FA-33C6-B3A1-5D2BAD0922E4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{AFF5BE45-4CCF-3F0B-93CA-A0220FCB2B5A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
