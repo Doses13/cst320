@@ -1,0 +1,7 @@
+// Joseph Byers: basic int assign and print
+program
+{
+    int a;
+    a = 9;
+    print(a);
+}

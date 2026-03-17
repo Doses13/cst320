@@ -1,0 +1,7 @@
+// Joseph Byers: char assignment and print
+program
+{
+    char c;
+    c = 65;
+    print(c);
+}

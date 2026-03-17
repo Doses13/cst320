@@ -1,0 +1,21 @@
+// Joseph Byers: if statement true and false paths */
+program
+{
+    int a;
+    int b;
+
+    a = 9;
+    b = 2;
+
+    if (a > b)
+    {
+        print(111);
+    }
+
+    if (b > a)
+    {
+        print(222);
+    }
+
+    print(333);
+}

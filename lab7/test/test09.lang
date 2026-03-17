@@ -1,0 +1,10 @@
+// Joseph Byers: function call without params and int return */
+program
+{
+    int f()
+    {
+        return 42;
+    }
+
+    print(f());
+}

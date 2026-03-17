@@ -1,0 +1,15 @@
+// Joseph Byers: array refs as lvals and rvals */
+program
+{
+    int a[4];
+
+    a[0] = 5;
+    a[1] = 7;
+    a[2] = a[0] + a[1];
+    a[3] = a[2] * 2;
+
+    print(a[0]);
+    print(a[1]);
+    print(a[2]);
+    print(a[3]);
+}

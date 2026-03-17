@@ -1,0 +1,10 @@
+// Joseph Byers: function call with params and return value */
+program
+{
+    int add(int x, int y)
+    {
+        return x + y;
+    }
+
+    print(add(8, 9));
+}
