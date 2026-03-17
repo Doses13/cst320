@@ -31,7 +31,8 @@ class cArrayDeclNode : public cDeclNode
         }
 
         virtual bool IsArray() { return true; }
-        virtual bool IsType()  { return true; }
+        virtual bool IsVar()   { return true; }
+        virtual bool IsType()  { return false; }
 
         virtual string NodeType() { return string("array_decl"); }
         virtual void Visit(cVisitor *visitor) { visitor->Visit(this); }

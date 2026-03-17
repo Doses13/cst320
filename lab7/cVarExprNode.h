@@ -137,7 +137,7 @@ class cVarExprNode : public cExprNode
             cDeclNode *decl = GetDecl();
             if (decl == nullptr) return nullptr;
 
-            cDeclNode *type = decl->GetType();
+            cDeclNode *type = decl->IsArray() ? decl : decl->GetType();
             if (type == nullptr) return nullptr;
 
             for (int i = 0; i < GetPartCount(); i++)

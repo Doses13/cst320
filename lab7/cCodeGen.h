@@ -66,6 +66,7 @@ class cCodeGen : public cVisitor
         void Emit(const std::string &text);
         void EmitLine(const std::string &text);
         void EmitLabel(const std::string &label);
+        void EmitVarAddress(cVarExprNode *node);
         std::string NewLabel();
 
         void GenExpr(cExprNode *node);

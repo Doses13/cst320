@@ -323,7 +323,7 @@ void cSizeOffset::Visit(cVarExprNode *node)
 
     int size = decl->GetSize();
     int offset = decl->GetOffset();
-    cDeclNode *currentType = decl->GetType();
+    cDeclNode *currentType = decl->IsArray() ? decl : decl->GetType();
 
     node->ClearRowSizes();
 
@@ -352,6 +352,7 @@ void cSizeOffset::Visit(cVarExprNode *node)
                 cDeclNode *elemType = currentType->GetType();
                 node->AddRowSize((elemType == nullptr) ? 0 : elemType->GetSize());
                 currentType = elemType;
+                size = (elemType == nullptr) ? 0 : elemType->GetSize();
             }
             continue;
         }

@@ -36,6 +36,33 @@ void cCodeGen::EmitLabel(const string &label)
     EmitString(":\n");
 }
 
+void cCodeGen::EmitVarAddress(cVarExprNode *node)
+{
+    if (node == nullptr) return;
+
+    // start with FP + base offset
+    EmitLine("PUSH " + std::to_string(node->GetOffset()));
+    EmitLine("PUSHFP");
+    EmitLine("PLUS");
+
+    const std::vector<int> &rowSizes = node->GetRowSizes();
+    int row = 0;
+
+    for (int i = 0; i < node->GetPartCount(); i++)
+    {
+        cExprNode *indexExpr = node->GetPartExpr(i);
+        if (indexExpr == nullptr) continue;
+
+        indexExpr->Visit(this);   // push index value
+
+        int rowSize = 0;
+        if (row < (int)rowSizes.size()) rowSize = rowSizes[row++];
+        EmitLine("PUSH " + std::to_string(rowSize));
+        EmitLine("TIMES");        // if TIMES fails, use MULTIPLY
+        EmitLine("PLUS");         // add displacement to base address
+    }
+}
+
 string cCodeGen::NewLabel()
 {
     return GenerateLabel();
@@ -119,12 +146,15 @@ void cCodeGen::Visit(cAssignNode *node)
     cVarExprNode *lhs = dynamic_cast<cVarExprNode*>(node->GetLHS());
     if (rhs == nullptr || lhs == nullptr) return;
 
-    rhs->Visit(this);                       // leaves value on stack
-    EmitLine("DUP");
-    EmitLine("PUSH " + std::to_string(lhs->GetOffset()));
-    EmitLine("PUSHFP");
-    EmitLine("PLUS");
-    EmitLine("POPVARIND");
+    rhs->Visit(this);        // value
+    EmitLine("DUP");         // preserve assignment result
+    EmitVarAddress(lhs);     // address
+
+    if (lhs->GetSize() == 1)
+        EmitLine("POPCVARIND");
+    else
+        EmitLine("POPVARIND");
+
     EmitLine("POP");
 }
 
@@ -152,10 +182,12 @@ void cCodeGen::Visit(cVarExprNode *node)
 {
     if (node == nullptr) return;
 
-    EmitLine("PUSH " + std::to_string(node->GetOffset()));
-    EmitLine("PUSHFP");
-    EmitLine("PLUS");
-    EmitLine("PUSHVARIND");
+    EmitVarAddress(node);
+
+    if (node->GetSize() == 1)
+        EmitLine("PUSHCVARIND");
+    else
+        EmitLine("PUSHVARIND");
 }
 
 void cCodeGen::Visit(cBinaryExprNode *node)

@@ -176,7 +176,7 @@ void cSemantics::Visit(cVarExprNode *node)
     cDeclNode *decl = node->GetDecl();
     if (decl == nullptr) return;
 
-    cDeclNode *type = decl->GetType();
+    cDeclNode *type = decl->IsArray() ? decl : decl->GetType();
     string prefix = node->GetName();
 
     for (int i = 0; i < node->GetPartCount(); i++)
