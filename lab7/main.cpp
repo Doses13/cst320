@@ -21,7 +21,7 @@
 
 #define DEBUG
 #define STACKL
-#define STACKL_OPCODES
+//#define STACKL_OPCODES
 //#define STACKL_DBG
 
 // define global variables

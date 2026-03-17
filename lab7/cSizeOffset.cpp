@@ -97,7 +97,7 @@ void cSizeOffset::Visit(cProgramNode *node)
     if (block != nullptr) block->Visit(this);
 
     // Program size is the final high-water mark.
-    node->SetSize(m_highWater);
+    node->SetSize(FinalAlignedSize(m_highWater));
 
     m_nextOffset = savedNext;
     m_highWater = savedHigh;
@@ -253,8 +253,7 @@ void cSizeOffset::Visit(cFuncDeclNode *node)
     if (decls != nullptr) decls->Visit(this);
     if (stmts != nullptr) stmts->Visit(this);
 
-    // Function frame size should reflect the raw high-water mark.
-    node->SetSize(m_highWater);
+    node->SetSize(FinalAlignedSize(m_highWater));
     node->SetOffset(0);
 
     m_nextOffset = savedNext;

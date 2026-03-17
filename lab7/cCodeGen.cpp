@@ -160,7 +160,37 @@ void cCodeGen::Visit(cVarExprNode *node)
 
 void cCodeGen::Visit(cBinaryExprNode *node)
 {
-    if (node != nullptr) node->VisitAllChildren(this);
+    if (node == nullptr) return;
+
+    cExprNode *left = node->GetLeft();
+    cExprNode *right = node->GetRight();
+    cOpNode *op = node->GetOp();
+    if (left == nullptr || right == nullptr || op == nullptr) return;
+
+    left->Visit(this);
+    right->Visit(this);
+
+    switch (op->GetOp())
+    {
+        case '+': EmitLine("PLUS"); break;
+        case '-': EmitLine("MINUS"); break;
+        case '*': EmitLine("TIMES"); break;      // if this doesn't assemble, try MULTIPLY
+        case '/': EmitLine("DIVIDE"); break;
+        case '%': EmitLine("MOD"); break;
+
+        case '<': EmitLine("LT"); break;
+        case '>': EmitLine("GT"); break;
+        case GE:  EmitLine("GE"); break;
+        case LE:  EmitLine("LE"); break;
+        case EQUALS:     EmitLine("EQ"); break;
+        case NOT_EQUALS: EmitLine("NE"); break;
+        case AND: EmitLine("AND"); break;
+        case OR:  EmitLine("OR"); break;
+
+        default:
+            std::cerr << "Unknown binary op " << op->GetOp() << "\n";
+            break;
+    }
 }
 
 void cCodeGen::Visit(cIntExprNode *node)
