@@ -17,7 +17,7 @@ class cVarExprNode : public cExprNode
         cVarExprNode(cSymbol *sym) : cExprNode(), m_size(0), m_offset(0)
         {
             AddChild(sym);
-            
+
             if (sym == nullptr || sym->GetDecl() == nullptr)
             {
                 string name = (sym == nullptr) ? string("<null>") : sym->GetName();
@@ -76,6 +76,11 @@ class cVarExprNode : public cExprNode
             return GetChild(index + 1);
         }
 
+        cExprNode *GetPart(int index)
+        {
+            return dynamic_cast<cExprNode*>(GetChild(index + 1));
+        }
+
         cExprNode *GetPartExpr(int index)
         {
             return dynamic_cast<cExprNode*>(GetChild(index + 1));
@@ -85,11 +90,6 @@ class cVarExprNode : public cExprNode
         {
             return dynamic_cast<cSymbol*>(GetChild(index + 1));
         }
-
-        // cExprNode *GetPart(int index)
-        // {
-        //     return static_cast<cExprNode*>(GetChild(index + 1));
-        // }
 
         int GetSize()
         {

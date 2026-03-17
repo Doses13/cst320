@@ -26,7 +26,6 @@ class cFuncDeclNode : public cDeclNode
             if (name == nullptr) return;
 
             bool thisHadDefinition = (decls != nullptr || stmts != nullptr);
-
             cDeclNode *oldDecl = name->GetDecl();
 
             if (oldDecl == nullptr)
@@ -37,16 +36,14 @@ class cFuncDeclNode : public cDeclNode
 
             if (!oldDecl->IsFunc())
             {
-                SemanticParseError("Symbol " + name->GetName() +
-                    " already defined in current scope");
+                SemanticParseError(name->GetName() + " previously defined as other than a function");
                 return;
             }
 
             cFuncDeclNode *oldFunc = dynamic_cast<cFuncDeclNode*>(oldDecl);
             if (oldFunc == nullptr)
             {
-                SemanticParseError("Symbol " + name->GetName() +
-                    " already defined in current scope");
+                SemanticParseError(name->GetName() + " previously defined as other than a function");
                 return;
             }
 
@@ -54,14 +51,20 @@ class cFuncDeclNode : public cDeclNode
 
             if (oldFunc->GetType() != GetType())
             {
-                SemanticParseError(name->GetName() +
-                    " previously declared with different return type");
+                SemanticParseError(name->GetName() + " previously defined with different return type");
+                return;
             }
 
             if (oldFunc->GetParamCount() != GetParamCount())
             {
-                SemanticParseError(name->GetName() +
-                    " redeclared with a different number of parameters");
+                SemanticParseError(name->GetName() + " redeclared with a different number of parameters");
+                return;
+            }
+
+            if (!SameParameterTypes(oldFunc))
+            {
+                SemanticParseError(name->GetName() + " previously defined with different parameters");
+                return;
             }
 
             if (thisHadDefinition && oldHadDefinition)
@@ -136,5 +139,27 @@ class cFuncDeclNode : public cDeclNode
         {
             cSymbol *nameSym = GetNameSymbol();
             return (nameSym == nullptr) ? string("") : nameSym->GetName();
+        }
+
+    protected:
+        bool SameParameterTypes(cFuncDeclNode *other)
+        {
+            if (other == nullptr) return false;
+            if (GetParamCount() != other->GetParamCount()) return false;
+
+            for (int i = 0; i < GetParamCount(); i++)
+            {
+                cDeclNode *myDecl = GetParamDecl(i);
+                cDeclNode *otherDecl = other->GetParamDecl(i);
+                cDeclNode *myType = (myDecl == nullptr) ? nullptr : myDecl->GetType();
+                cDeclNode *otherType = (otherDecl == nullptr) ? nullptr : otherDecl->GetType();
+
+                if (myType != otherType)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 };

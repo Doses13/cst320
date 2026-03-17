@@ -1,5 +1,135 @@
+#include <cstdlib>
+#include <limits>
+#include <string>
+
 #include "astnodes.h"
 #include "cSemantics.h"
+#include "cSymbolTable.h"
+
+using std::string;
+
+namespace
+{
+    cDeclNode *FindFieldDecl(cDeclNode *type, const string &fieldName)
+    {
+        cStructDeclNode *structType = dynamic_cast<cStructDeclNode*>(type);
+        if (structType == nullptr) return nullptr;
+
+        cDeclsNode *fields = structType->GetFields();
+        if (fields == nullptr) return nullptr;
+
+        for (int i = 0; i < fields->GetCount(); i++)
+        {
+            cDeclNode *field = fields->GetDecl(i);
+            if (field != nullptr && field->GetName() == fieldName)
+            {
+                return field;
+            }
+        }
+
+        return nullptr;
+    }
+
+    bool ExtractNumericValue(const string &xml, string &value)
+    {
+        size_t pos = xml.find("value=\"");
+        if (pos == string::npos) return false;
+        pos += 7;
+        size_t end = xml.find('"', pos);
+        if (end == string::npos) return false;
+        value = xml.substr(pos, end - pos);
+        return true;
+    }
+
+    bool TryGetIntLiteral(cExprNode *expr, long long &value)
+    {
+        cIntExprNode *intNode = dynamic_cast<cIntExprNode*>(expr);
+        if (intNode == nullptr) return false;
+
+        string text;
+        if (!ExtractNumericValue(intNode->ToString(), text)) return false;
+
+        char *end = nullptr;
+        value = std::strtoll(text.c_str(), &end, 10);
+        return (end != nullptr && *end == '\0');
+    }
+
+    bool TryEvalConstInt(cExprNode *expr, long long &value)
+    {
+        if (TryGetIntLiteral(expr, value)) return true;
+
+        cBinaryExprNode *bin = dynamic_cast<cBinaryExprNode*>(expr);
+        if (bin == nullptr) return false;
+
+        long long left = 0;
+        long long right = 0;
+        if (!TryEvalConstInt(bin->GetLeft(), left)) return false;
+        if (!TryEvalConstInt(bin->GetRight(), right)) return false;
+
+        cOpNode *op = bin->GetOp();
+        if (op == nullptr) return false;
+
+        switch (op->GetOp())
+        {
+            case '+': value = left + right; return true;
+            case '-': value = left - right; return true;
+            case '*': value = left * right; return true;
+            case '/':
+                if (right == 0) return false;
+                value = left / right;
+                return true;
+            case '%':
+                if (right == 0) return false;
+                value = left % right;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    bool IsCharSizedIntLiteral(cExprNode *expr)
+    {
+        long long value = 0;
+        if (!TryEvalConstInt(expr, value)) return false;
+        return (value >= 0 && value <= 127);
+    }
+
+    bool IsCharLikeExpr(cExprNode *expr)
+    {
+        if (expr == nullptr) return false;
+
+        cDeclNode *type = expr->GetType();
+        if (type != nullptr && type->IsChar()) return true;
+
+        if (IsCharSizedIntLiteral(expr)) return true;
+
+        cBinaryExprNode *bin = dynamic_cast<cBinaryExprNode*>(expr);
+        if (bin != nullptr)
+        {
+            cDeclNode *binType = bin->GetType();
+            if (binType != nullptr && binType->IsFloat()) return false;
+            return IsCharLikeExpr(bin->GetLeft()) && IsCharLikeExpr(bin->GetRight());
+        }
+
+        return false;
+    }
+
+    bool CanAssignExpr(cDeclNode *lhsType, cExprNode *rhs, cDeclNode *rhsType)
+    {
+        if (lhsType == nullptr || rhs == nullptr || rhsType == nullptr) return false;
+
+        if (lhsType->IsChar())
+        {
+            if (rhsType->IsChar()) return true;
+            if (rhsType->IsFloat()) return false;
+
+            if (IsCharSizedIntLiteral(rhs)) return true;
+            return IsCharLikeExpr(rhs);
+        }
+
+        return lhsType->IsCompatibleWith(rhsType);
+    }
+}
 
 void cSemantics::Visit(cAssignNode *node)
 {
@@ -11,12 +141,30 @@ void cSemantics::Visit(cAssignNode *node)
 
     if (lhs == nullptr || rhs == nullptr) return;
 
+    cVarExprNode *lhsVar = dynamic_cast<cVarExprNode*>(lhs);
+    if (lhsVar == nullptr)
+    {
+        cFuncCallNode *lhsCall = dynamic_cast<cFuncCallNode*>(lhs);
+        if (lhsCall != nullptr)
+        {
+            node->SemanticError(lhsCall->GetName() + " is not an lval");
+        }
+        return;
+    }
+
+    cDeclNode *lhsDecl = lhsVar->GetDecl();
+    if (lhsDecl != nullptr && lhsDecl->IsFunc())
+    {
+        node->SemanticError(lhsVar->GetName() + " is not an lval");
+        return;
+    }
+
     cDeclNode *lhsType = lhs->GetType();
     cDeclNode *rhsType = rhs->GetType();
 
     if (lhsType == nullptr || rhsType == nullptr) return;
 
-    if (!lhsType->IsCompatibleWith(rhsType))
+    if (!CanAssignExpr(lhsType, rhs, rhsType))
     {
         node->SemanticError("Cannot assign " + rhsType->GetName() +
                             " to " + lhsType->GetName());
@@ -28,71 +176,47 @@ void cSemantics::Visit(cVarExprNode *node)
     cDeclNode *decl = node->GetDecl();
     if (decl == nullptr) return;
 
-    cSymbol *sym = node->GetSymbol();
-    string name = (sym == nullptr) ? string("") : sym->GetName();
-
-    if (decl->IsFunc())
-    {
-        node->SemanticError("Symbol " + name + " is a function, not a variable");
-    }
-
     cDeclNode *type = decl->GetType();
-    int partCount = node->GetPartCount();
+    string prefix = node->GetName();
 
-    for (int i = 0; i < partCount; i++)
+    for (int i = 0; i < node->GetPartCount(); i++)
     {
         cSymbol *fieldSym = node->GetPartSymbol(i);
         if (fieldSym != nullptr)
         {
-            cStructDeclNode *structType = dynamic_cast<cStructDeclNode*>(type);
-            if (structType == nullptr)
+            if (type == nullptr || !type->IsStruct())
             {
-                node->SemanticError(name + " is not a struct");
+                node->SemanticError(prefix + " is not a struct");
                 return;
             }
 
-            cDeclsNode *fields = structType->GetFields();
-            cDeclNode *fieldDecl = nullptr;
-
-            if (fields != nullptr)
-            {
-                for (int j = 0; j < fields->GetCount(); j++)
-                {
-                    cDeclNode *field = fields->GetDecl(j);
-                    if (field != nullptr && field->GetName() == fieldSym->GetName())
-                    {
-                        fieldDecl = field;
-                        break;
-                    }
-                }
-            }
-
+            cDeclNode *fieldDecl = FindFieldDecl(type, fieldSym->GetName());
             if (fieldDecl == nullptr)
             {
-                node->SemanticError("Struct " + structType->GetName() +
-                                    " has no field named " + fieldSym->GetName());
+                node->SemanticError(fieldSym->GetName() + " is not a field of " + prefix);
                 return;
             }
 
             type = fieldDecl->GetType();
+            prefix += "." + fieldSym->GetName();
             continue;
         }
 
-        cExprNode *index = node->GetPartExpr(i);
-        if (index != nullptr)
+        cExprNode *indexExpr = node->GetPartExpr(i);
+        if (indexExpr != nullptr)
         {
-            index->Visit(this);
+            indexExpr->Visit(this);
 
             if (type == nullptr || !type->IsArray())
             {
-                node->SemanticError(name + " is not an array");
+                node->SemanticError(prefix + " is not an array");
                 return;
             }
 
-            cDeclNode *indexType = index->GetType();
+            cDeclNode *indexType = indexExpr->GetType();
             if (indexType != nullptr && !indexType->IsInt())
             {
-                node->SemanticError("Index of " + name + " is not an int");
+                node->SemanticError("Index of " + prefix + " is not an int");
             }
 
             type = type->GetType();
@@ -106,18 +230,29 @@ void cSemantics::Visit(cVarExprNode *node)
 
 void cSemantics::Visit(cFuncCallNode *node)
 {
-    node->VisitAllChildren(this);
+    cParamsNode *actuals = node->GetParams();
+    if (actuals != nullptr) actuals->Visit(this);
 
     cDeclNode *decl = node->GetDecl();
     if (decl == nullptr) return;
-    if (!decl->IsFunc()) return;
+
+    string name = node->GetName();
+
+    if (!decl->IsFunc())
+    {
+        node->SemanticError(name + " is not a function");
+        return;
+    }
 
     cFuncDeclNode *funcDecl = dynamic_cast<cFuncDeclNode*>(decl);
     if (funcDecl == nullptr) return;
 
-    string name = node->GetName();
+    if (!funcDecl->HasDefinition())
+    {
+        node->SemanticError(name + " is not fully defined");
+        return;
+    }
 
-    cParamsNode *actuals = node->GetParams();
     int actualCount = (actuals == nullptr) ? 0 : actuals->GetCount();
     int formalCount = funcDecl->GetParamCount();
 
@@ -137,15 +272,10 @@ void cSemantics::Visit(cFuncCallNode *node)
         cDeclNode *actualType = actual->GetType();
         if (formalType == nullptr || actualType == nullptr) continue;
 
-        if (!formalType->IsCompatibleWith(actualType))
+        if (!CanAssignExpr(formalType, actual, actualType))
         {
             node->SemanticError("function " + name + " called with incompatible argument");
             break;
         }
-    }
-
-    if (!funcDecl->HasDefinition())
-    {
-        node->SemanticError("Function " + name + " not fully defined");
     }
 }

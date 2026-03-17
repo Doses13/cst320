@@ -95,7 +95,8 @@ void cSizeOffset::Visit(cProgramNode *node)
     cBlockNode *block = node->GetBlock();
     if (block != nullptr) block->Visit(this);
 
-    node->SetSize(FinalAlignedSize(m_highWater));
+    // Program size is the final high-water mark.
+    node->SetSize(m_highWater);
 
     m_nextOffset = savedNext;
     m_highWater = savedHigh;
@@ -107,6 +108,7 @@ void cSizeOffset::Visit(cBlockNode *node)
     int savedHigh = m_highWater;
     int baseOffset = savedNext;
 
+    // This block reuses enclosing storage and grows from the current base.
     m_highWater = baseOffset;
 
     cDeclsNode *decls = node->GetDecls();
@@ -115,14 +117,14 @@ void cSizeOffset::Visit(cBlockNode *node)
     if (decls != nullptr) decls->Visit(this);
     if (stmts != nullptr) stmts->Visit(this);
 
-    int rawBlockSize = m_highWater - baseOffset;
-    int alignedBlockSize = FinalAlignedSize(rawBlockSize);
-    int alignedBlockHigh = baseOffset + alignedBlockSize;
+    int blockHigh = m_highWater;
 
-    node->SetSize(alignedBlockSize);
+    // Block size is raw high-water mark relative to its base.
+    node->SetSize(blockHigh - baseOffset);
 
+    // Reclaim inner-scope space, but preserve the high-water mark reached.
     m_nextOffset = savedNext;
-    m_highWater = std::max(savedHigh, alignedBlockHigh);
+    m_highWater = std::max(savedHigh, blockHigh);
 }
 
 void cSizeOffset::Visit(cDeclsNode *node)
@@ -142,18 +144,8 @@ void cSizeOffset::Visit(cDeclsNode *node)
         }
     }
 
-    int rawSize = m_nextOffset - baseOffset;
-
-    // Struct field lists keep their raw size (e.g. 17),
-    // ordinary declaration scopes get word-aligned.
-    if (m_inStructLayout)
-    {
-        node->SetSize(rawSize);
-    }
-    else
-    {
-        node->SetSize(FinalAlignedSize(rawSize));
-    }
+    // Decls size is also the raw high-water span from the start of this list.
+    node->SetSize(m_nextOffset - baseOffset);
 }
 
 void cSizeOffset::Visit(cVarDeclNode *node)
@@ -211,7 +203,8 @@ void cSizeOffset::Visit(cFuncDeclNode *node)
     if (decls != nullptr) decls->Visit(this);
     if (stmts != nullptr) stmts->Visit(this);
 
-    node->SetSize(FinalAlignedSize(m_highWater));
+    // Function frame size should reflect the raw high-water mark.
+    node->SetSize(m_highWater);
     node->SetOffset(0);
 
     m_nextOffset = savedNext;

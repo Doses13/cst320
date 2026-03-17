@@ -44,23 +44,60 @@ class cDeclNode : public cAstNode
             if (type == nullptr) return false;
             if (this == type) return true;
 
-            auto rank = [](cDeclNode *t) -> int
+            // Non-scalar types only match exactly.
+            if (IsStruct() || type->IsStruct() ||
+                IsArray()  || type->IsArray()  ||
+                IsFunc()   || type->IsFunc())
             {
-                if (t == nullptr) return -1;
-                if (t->IsChar()) return 1;
-                if (t->IsInt() && !t->IsFloat() && t->GetSize() == 4) return 2;
-                if (t->IsInt() && !t->IsFloat() && t->GetSize() == 8) return 3;
-                if (t->IsFloat() && t->GetSize() == 4) return 4;
-                if (t->IsFloat() && t->GetSize() == 8) return 5;
-                return -1;
+                return false;
+            }
+
+            auto isInt32 = [](cDeclNode *t) -> bool
+            {
+                return (t != nullptr && t->IsInt() && !t->IsFloat() && !t->IsChar() && t->GetSize() == 4);
             };
 
-            int dstRank = rank(this);
-            int srcRank = rank(type);
-
-            if (dstRank > 0 && srcRank > 0)
+            auto isInt64 = [](cDeclNode *t) -> bool
             {
-                return srcRank <= dstRank;
+                return (t != nullptr && t->IsInt() && !t->IsFloat() && !t->IsChar() && t->GetSize() == 8);
+            };
+
+            auto isFloat32 = [](cDeclNode *t) -> bool
+            {
+                return (t != nullptr && t->IsFloat() && t->GetSize() == 4);
+            };
+
+            auto isFloat64 = [](cDeclNode *t) -> bool
+            {
+                return (t != nullptr && t->IsFloat() && t->GetSize() == 8);
+            };
+
+            // char only accepts char directly. cSemantics special-cases
+            // assignable constant/range-preserving int expressions.
+            if (IsChar())
+            {
+                return type->IsChar();
+            }
+
+            if (isInt32(this))
+            {
+                return type->IsChar() || isInt32(type);
+            }
+
+            if (isInt64(this))
+            {
+                return type->IsChar() || isInt32(type) || isInt64(type);
+            }
+
+            if (isFloat32(this))
+            {
+                return type->IsChar() || isInt32(type) || isFloat32(type);
+            }
+
+            if (isFloat64(this))
+            {
+                return type->IsChar() || isInt32(type) || isInt64(type) ||
+                       isFloat32(type) || isFloat64(type);
             }
 
             return false;
