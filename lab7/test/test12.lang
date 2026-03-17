@@ -1,0 +1,63 @@
+// Joseph Byers: chunky control flow and operators
+program
+{
+    int a;
+    int b;
+    int c;
+    int i;
+    int sum;
+
+    a = 9;
+    b = 2;
+    c = 9;
+    i = 0;
+    sum = 0;
+
+    if (a == c)
+        print(100);
+    else
+        print(101);
+    endif;
+
+    if (a != b)
+        print(102);
+    else
+        print(103);
+    endif;
+
+    if (b >= a)
+        print(104);
+    else
+        print(105);
+    endif;
+
+    if (b <= a)
+        print(106);
+    else
+        print(107);
+    endif;
+
+    if ((a > b) && (c == a))
+        print(108);
+    else
+        print(109);
+    endif;
+
+    if ((a < b) || (b < a))
+        print(110);
+    else
+        print(111);
+    endif;
+
+    while (i < 5)
+    {
+        sum = sum + i;
+        i = i + 1;
+    }
+
+    print(sum);
+    print(a + b * 3);
+    print((a + b) * 3);
+    print(20 - 5 - 3);
+    print(20 / 5 * 2);
+}
