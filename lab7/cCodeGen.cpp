@@ -101,10 +101,21 @@ void cCodeGen::Visit(cFuncDeclNode *node)
 {
     if (node == nullptr) return;
 
+    std::string skipLabel = NewLabel();
+    std::string savedFunction = m_currentFunction;
+    std::string savedReturn = m_returnLabel;
+
+    EmitLine("JUMP @" + skipLabel);
+
     m_currentFunction = node->GetName();
     m_returnLabel = NewLabel();
 
-    EmitLabel(m_currentFunction);   // this is what will create "main:"
+    EmitLabel(m_currentFunction);
+
+    if (node->GetSize() > 0)
+    {
+        EmitLine("ADJSP " + std::to_string(node->GetSize()));
+    }
 
     cDeclsNode *decls = node->GetDecls();
     cStmtsNode *stmts = node->GetStmts();
@@ -112,14 +123,27 @@ void cCodeGen::Visit(cFuncDeclNode *node)
     if (decls != nullptr) decls->Visit(this);
     if (stmts != nullptr) stmts->Visit(this);
 
+    EmitLine("PUSH 0");          // default fallthrough return
     EmitLabel(m_returnLabel);
+    EmitLine("RETURNV");
 
-    // temporary function-exit code goes here
+    EmitLabel(skipLabel);
+
+    m_currentFunction = savedFunction;
+    m_returnLabel = savedReturn;
 }
 
 void cCodeGen::Visit(cReturnNode *node)
 {
-    if (node != nullptr) node->VisitAllChildren(this);
+    if (node == nullptr) return;
+
+    cExprNode *expr = node->GetExpr();
+    if (expr != nullptr)
+        expr->Visit(this);
+    else
+        EmitLine("PUSH 0");
+
+    EmitLine("JUMP @" + m_returnLabel);
 }
 
 void cCodeGen::Visit(cPrintNode *node)
@@ -212,7 +236,29 @@ void cCodeGen::Visit(cWhileNode *node)
 
 void cCodeGen::Visit(cFuncCallNode *node)
 {
-    if (node != nullptr) node->VisitAllChildren(this);
+    if (node == nullptr) return;
+
+    cParamsNode *params = node->GetParams();
+    if (params != nullptr)
+    {
+        for (int i = params->GetCount() - 1; i >= 0; --i)
+        {
+            cExprNode *arg = params->GetParam(i);
+            if (arg != nullptr) arg->Visit(this);
+        }
+    }
+
+    EmitLine("CALL @" + node->GetName());
+
+    int paramBytes = (params == nullptr) ? 0 : params->GetSize();
+    int wordCount = paramBytes / 4;
+
+    // keep return value, discard argument words underneath it
+    for (int i = 0; i < wordCount; ++i)
+    {
+        EmitLine("SWAP");
+        EmitLine("POP");
+    }
 }
 
 void cCodeGen::Visit(cParamsNode *node)
