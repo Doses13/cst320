@@ -1,4 +1,4 @@
-// Joseph Byers: if statement true and false paths */
+// Joseph Byers: if statement true and false paths
 program
 {
     int a;
@@ -11,11 +11,13 @@ program
     {
         print(111);
     }
+    endif;
 
     if (b > a)
     {
         print(222);
     }
+    endif;
 
     print(333);
 }

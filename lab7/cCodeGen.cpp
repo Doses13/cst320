@@ -160,7 +160,32 @@ void cCodeGen::Visit(cAssignNode *node)
 
 void cCodeGen::Visit(cIfNode *node)
 {
-    if (node != nullptr) node->VisitAllChildren(this);
+    if (node == nullptr) return;
+
+    std::string falseLabel = NewLabel();
+    std::string endLabel = NewLabel();
+
+    cExprNode *cond = node->GetCond();
+    cStmtsNode *thenPart = node->GetThenPart();
+    cStmtsNode *elsePart = node->GetElsePart();
+
+    if (cond != nullptr) cond->Visit(this);
+
+    EmitLine("JUMPE @" + falseLabel);
+
+    if (thenPart != nullptr) thenPart->Visit(this);
+
+    if (elsePart != nullptr)
+    {
+        EmitLine("JUMP @" + endLabel);
+        EmitLabel(falseLabel);
+        elsePart->Visit(this);
+        EmitLabel(endLabel);
+    }
+    else
+    {
+        EmitLabel(falseLabel);
+    }
 }
 
 void cCodeGen::Visit(cWhileNode *node)
